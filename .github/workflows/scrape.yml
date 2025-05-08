@@ -1,0 +1,33 @@
+name: Serp scrape
+
+on:
+  schedule:
+    - cron: "0 4 * * 1" # every Monday at 04:00 UTC
+  workflow_dispatch: # allows manual triggering
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run SEO scraper
+        run: node index.mjs
+        env:
+          SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
+
+      - name: Upload CSV artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: serp-output
+          path: serp_output.csv
