@@ -30,4 +30,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: serp-output
-          path: serp_output.csv
+          path: serp_output*.CSV
