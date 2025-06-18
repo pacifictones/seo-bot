@@ -31,6 +31,8 @@ for (const kw of keywords) {
     });
   });
 
+  //Add timestamp to file name
+
   // B) Fetch autocomplete suggestions
   const auto = await fetch(
     `${base}?engine=google_autocomplete&q=${encodeURIComponent(
@@ -51,8 +53,12 @@ for (const kw of keywords) {
 
 // 5. Write everything out as CSV
 const header = "keyword,type,position,title,url\n";
+
+// ➜ NEW line: stamp today’s date (YYYY-MM-DD)
+const dateTag = new Date().toISOString().slice(0, 10); // e.g. 2025-05-12
+
 fs.writeFileSync(
-  "serp_output.csv",
+  `serp_output_${dateTag}.csv`, // ← filename now includes the date
   header +
     rows
       .map(
